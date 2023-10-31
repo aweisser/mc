@@ -39,6 +39,10 @@ var supportTopAPIFlags = []cli.Flag{
 		Name:  "node",
 		Usage: "summarize current API calls only on matching servers",
 	},
+	cli.StringSliceFlag{
+		Name:  "call",
+		Usage: "trace only matching call types. See CALL TYPES below for list. (default: s3)",
+	},
 	cli.BoolFlag{
 		Name:  "errors, e",
 		Usage: "summarize current API calls throwing only errors",
@@ -62,12 +66,18 @@ USAGE:
 FLAGS:
   {{range .VisibleFlags}}{{.}}
   {{end}}
+CALL TYPES:
+` + traceCallsHelp() + `
+
 EXAMPLES:
    1. Display current in-progress all S3 API calls.
       {{.Prompt}} {{.HelpName}} myminio/
 
    2. Display current in-progress all 's3.PutObject' API calls.
       {{.Prompt}} {{.HelpName}} --name s3.PutObject myminio/
+
+   3. Display current in-progress API calls for call types s3, storage and os.
+	  {{.Prompt}} {{.HelpName}} --call "s3,storage,os" myminio/
 `,
 }
 

@@ -179,12 +179,12 @@ func (m *traceUI) View() string {
 			traceSt = &topAPIStats{}
 		}
 		traceSt.addAPICall(1)
+		traceSt.addAPIDurationNanos(res.Trace.Duration.Nanoseconds())
 		if res.Trace.HTTP != nil {
 			traceSt.addAPIBytesRX(res.Trace.HTTP.CallStats.InputBytes)
 			traceSt.addAPIBytesTX(res.Trace.HTTP.CallStats.OutputBytes)
-			traceSt.addAPIDurationNanos(res.Trace.Duration.Nanoseconds())
 		}
-		if res.Trace.HTTP.RespInfo.StatusCode >= 499 {
+		if (res.Trace.HTTP != nil && res.Trace.HTTP.RespInfo.StatusCode >= 499) || res.Trace.Error != "" {
 			traceSt.addAPIErrors(1)
 		}
 		m.apiStatsMap[res.Trace.FuncName] = traceSt
